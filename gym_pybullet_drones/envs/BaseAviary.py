@@ -132,14 +132,17 @@ class BaseAviary(gym.Env):
             os.makedirs(os.path.dirname(self.ONBOARD_IMG_PATH), exist_ok=True)
         self.VISION_ATTR = vision_attributes
         if self.VISION_ATTR:
-            self.IMG_RES = np.array([64, 48])
+            self.IMG_RES = np.array([64, 48]) # self.IMG_RES = np.array([640, 480])
             self.IMG_FRAME_PER_SEC = 24
             self.IMG_CAPTURE_FREQ = int(self.PYB_FREQ/self.IMG_FRAME_PER_SEC)
             self.rgb = np.zeros(((self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0], 4)))
             self.dep = np.ones(((self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0])))
             self.seg = np.zeros(((self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0])))
             if self.IMG_CAPTURE_FREQ%self.PYB_STEPS_PER_CTRL != 0:
-                print("[ERROR] in BaseAviary.__init__(), PyBullet and control frequencies incompatible with the desired video capture frame rate ({:f}Hz)".format(self.IMG_FRAME_PER_SEC))
+                print(f"[ERROR] in BaseAviary.__init__(), PyBullet ({self.PYB_FREQ}Hz) and control ({self.CTRL_FREQ}Hz) frequencies incompatible with the desired video capture frame rate ({self.IMG_FRAME_PER_SEC}Hz)")
+                print(f"IMG_CAPTURE_FREQ = {self.IMG_CAPTURE_FREQ}")
+                print(f"PYB_STEPS_PER_CTRL = {self.PYB_STEPS_PER_CTRL}")
+                print(f"IMG_CAPTURE_FREQ%PYB_STEPS_PER_CTRL = {self.IMG_CAPTURE_FREQ%self.PYB_STEPS_PER_CTRL}")
                 exit()
             if self.RECORD:
                 for i in range(self.NUM_DRONES):

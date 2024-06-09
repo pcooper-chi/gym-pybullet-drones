@@ -104,7 +104,7 @@ class BaseRLAviary(BaseAviary):
 
         """
         if self.OBS_TYPE == ObservationType.RGB:
-            p.loadURDF("block.urdf",
+            p.loadURDF("teddy_vhacd.urdf", # block
                        [1, 0, .1],
                        p.getQuaternionFromEuler([0, 0, 0]),
                        physicsClientId=self.CLIENT
@@ -119,7 +119,7 @@ class BaseRLAviary(BaseAviary):
                        p.getQuaternionFromEuler([0, 0, 0]),
                        physicsClientId=self.CLIENT
                        )
-            p.loadURDF("teddy_vhacd.urdf",
+            p.loadURDF("teddy_vhacd.urdf", # teddy_vhacd, teddy_large, r2d2
                        [0, -1, .1],
                        p.getQuaternionFromEuler([0, 0, 0]),
                        physicsClientId=self.CLIENT
@@ -252,7 +252,8 @@ class BaseRLAviary(BaseAviary):
         if self.OBS_TYPE == ObservationType.RGB:
             return spaces.Box(low=0,
                               high=255,
-                              shape=(self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0], 4), dtype=np.uint8)
+                              shape=(self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0]), dtype=np.uint8)
+                            # shape=(self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0], 4), dtype=np.uint8)
         elif self.OBS_TYPE == ObservationType.KIN:
             ############################################################
             #### OBS SPACE OF SIZE 12
@@ -294,16 +295,17 @@ class BaseRLAviary(BaseAviary):
             if self.step_counter%self.IMG_CAPTURE_FREQ == 0:
                 for i in range(self.NUM_DRONES):
                     self.rgb[i], self.dep[i], self.seg[i] = self._getDroneImages(i,
-                                                                                 segmentation=False
+                                                                                 segmentation=True
                                                                                  )
                     #### Printing observation to PNG frames example ############
                     if self.RECORD:
                         self._exportImage(img_type=ImageType.RGB,
                                           img_input=self.rgb[i],
-                                          path=self.ONBOARD_IMG_PATH+"drone_"+str(i),
+                                          path=self.ONBOARD_IMG_PATH+"/drone_"+str(i),
                                           frame_num=int(self.step_counter/self.IMG_CAPTURE_FREQ)
                                           )
-            return np.array([self.rgb[i] for i in range(self.NUM_DRONES)]).astype('float32')
+            # return np.array([self.rgb[i] for i in range(self.NUM_DRONES)]).astype('float32')
+            return np.array([self.seg[i] for i in range(self.NUM_DRONES)]).astype('float32')
         elif self.OBS_TYPE == ObservationType.KIN:
             ############################################################
             #### OBS SPACE OF SIZE 12
