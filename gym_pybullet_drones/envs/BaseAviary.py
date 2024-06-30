@@ -132,7 +132,7 @@ class BaseAviary(gym.Env):
             os.makedirs(os.path.dirname(self.ONBOARD_IMG_PATH), exist_ok=True)
         self.VISION_ATTR = vision_attributes
         if self.VISION_ATTR:
-            self.IMG_RES = np.array([64, 48]) # self.IMG_RES = np.array([640, 480])
+            self.IMG_RES = np.array([128, 96]) # self.IMG_RES = np.array([64, 48])
             self.IMG_FRAME_PER_SEC = 24
             self.IMG_CAPTURE_FREQ = int(self.PYB_FREQ/self.IMG_FRAME_PER_SEC)
             self.rgb = np.zeros(((self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0], 4)))
@@ -308,6 +308,9 @@ class BaseAviary(gym.Env):
             # (Image.fromarray(np.reshape(dep, (h, w)))).save(self.IMG_PATH+"frame_"+str(self.FRAME_NUM)+".png")
             # seg = ((seg-np.min(seg)) * 255 / (np.max(seg)-np.min(seg))).astype('uint8')
             # (Image.fromarray(np.reshape(seg, (h, w)))).save(self.IMG_PATH+"frame_"+str(self.FRAME_NUM)+".png")
+
+
+
             self.FRAME_NUM += 1
             if self.VISION_ATTR:
                 for i in range(self.NUM_DRONES):

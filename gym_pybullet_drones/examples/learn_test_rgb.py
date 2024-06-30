@@ -39,7 +39,7 @@ DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 
 DEFAULT_OBS = ObservationType('rgb') # 'kin' or 'rgb'
-DEFAULT_ACT = ActionType('one_d_rpm') # 'rpm' or 'pid' or 'vel' or 'one_d_rpm' or 'one_d_pid'
+DEFAULT_ACT = ActionType('vel') # 'rpm' or 'pid' or 'vel' or 'one_d_rpm' or 'one_d_pid'
 DEFAULT_AGENTS = 2
 DEFAULT_MA = False
 
@@ -77,7 +77,7 @@ def run(
     print('[INFO] Observation space:', train_env.observation_space)
 
     #### Train the model #######################################
-    model = PPO('MlpPolicy',
+    model = PPO('CnnPolicy',
                 train_env,
                 # tensorboard_log=filename+'/tb/',
                 verbose=1,

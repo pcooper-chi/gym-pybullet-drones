@@ -109,21 +109,24 @@ class BaseRLAviary(BaseAviary):
                        p.getQuaternionFromEuler([0, 0, 0]),
                        physicsClientId=self.CLIENT
                        )
-            p.loadURDF("cube_small.urdf",
-                       [0, 1, .1],
-                       p.getQuaternionFromEuler([0, 0, 0]),
-                       physicsClientId=self.CLIENT
-                       )
-            p.loadURDF("duck_vhacd.urdf",
-                       [-1, 0, .1],
-                       p.getQuaternionFromEuler([0, 0, 0]),
-                       physicsClientId=self.CLIENT
-                       )
-            p.loadURDF("teddy_vhacd.urdf", # teddy_vhacd, teddy_large, r2d2
-                       [0, -1, .1],
-                       p.getQuaternionFromEuler([0, 0, 0]),
-                       physicsClientId=self.CLIENT
-                       )
+            
+            # just load one object for now...
+
+            # p.loadURDF("cube_small.urdf",
+            #            [0, 1, .1],
+            #            p.getQuaternionFromEuler([0, 0, 0]),
+            #            physicsClientId=self.CLIENT
+            #            )
+            # p.loadURDF("duck_vhacd.urdf",
+            #            [-1, 0, .1],
+            #            p.getQuaternionFromEuler([0, 0, 0]),
+            #            physicsClientId=self.CLIENT
+            #            )
+            # p.loadURDF("teddy_vhacd.urdf", # teddy_vhacd, teddy_large, r2d2
+            #            [0, -1, .1],
+            #            p.getQuaternionFromEuler([0, 0, 0]),
+            #            physicsClientId=self.CLIENT
+            #            )
         else:
             pass
 

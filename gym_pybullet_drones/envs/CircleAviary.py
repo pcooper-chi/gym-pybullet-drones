@@ -11,7 +11,7 @@ class CircleAviary(BaseRLAviary):
     
     def __init__(self,
                  drone_model: DroneModel=DroneModel.CF2X,
-                 initial_xyzs=None,
+                 initial_xyzs=np.array([[0, 2, 1]]), # drone starts on the circle
                  initial_rpys=None,
                  physics: Physics=Physics.PYB,
                  pyb_freq: int = 240,
@@ -100,7 +100,7 @@ class CircleAviary(BaseRLAviary):
         # Optionally, you can add a reward for maintaining the desired height
         height_reward = max(0, 2 - abs(drone_z - self.TRAJECTORY_HEIGHT) ** 4)
 
-        scaler = 0.1
+        scaler = 0.12
         reward = (distance_reward + progress_reward + height_reward) * scaler
 
         return reward
