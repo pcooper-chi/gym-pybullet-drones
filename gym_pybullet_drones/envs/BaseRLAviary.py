@@ -252,7 +252,21 @@ class BaseRLAviary(BaseAviary):
             A Box() of shape (NUM_DRONES,H,W,4) or (NUM_DRONES,12) depending on the observation type.
 
         """
-        if self.OBS_TYPE == ObservationType.RGB:
+        if self.OBS_TYPE == ObservationType.YOLO_BBOXES:
+            # Adjust these values based on your YOLO output
+            return spaces.Dict({
+                'boxes': spaces.Box(low=0, high=1, shape=(10, 4), dtype=np.float32),
+                'classes': spaces.Box(low=0, high=100, shape=(10,), dtype=np.int32),
+                'scores': spaces.Box(low=0, high=1, shape=(10,), dtype=np.float32)
+            })
+        elif self.OBS_TYPE == ObservationType.RGB_YOLO:
+            return spaces.Dict({
+                'rgb': spaces.Box(low=0, high=255, shape=(self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0], 3), dtype=np.uint8),
+                'boxes': spaces.Box(low=0, high=1, shape=(10, 4), dtype=np.float32),
+                'classes': spaces.Box(low=0, high=100, shape=(10,), dtype=np.int32),
+                'scores': spaces.Box(low=0, high=1, shape=(10,), dtype=np.float32)
+            })
+        elif self.OBS_TYPE == ObservationType.RGB:
             return spaces.Box(low=0,
                               high=255,
                               shape=(self.NUM_DRONES, self.IMG_RES[1], self.IMG_RES[0]), dtype=np.uint8)
@@ -294,6 +308,29 @@ class BaseRLAviary(BaseAviary):
             A Box() of shape (NUM_DRONES,H,W,4) or (NUM_DRONES,12) depending on the observation type.
 
         """
+        if self.OBS_TYPE == ObservationType.YOLO_BBOXES:
+            if self.step_counter % self.IMG_CAPTURE_FREQ == 0:
+                for i in range(self.NUM_DRONES):
+                    self.rgb[i], _, _ = self._getDroneImages(i, segmentation=False)
+                    boxes, classes, scores = self._computeYOLOBoundingBoxes(self.rgb[i])
+                    self.last_yolo_obs = {
+                        'boxes': boxes,
+                        'classes': classes,
+                        'scores': scores
+                    }
+            return self.last_yolo_obs
+        elif self.OBS_TYPE == ObservationType.RGB_YOLO:
+            if self.step_counter % self.IMG_CAPTURE_FREQ == 0:
+                for i in range(self.NUM_DRONES):
+                    self.rgb[i], _, _ = self._getDroneImages(i, segmentation=False)
+                    boxes, classes, scores = self._computeYOLOBoundingBoxes(self.rgb[i])
+                    self.last_yolo_obs = {
+                        'rgb': self.rgb[i],
+                        'boxes': boxes,
+                        'classes': classes,
+                        'scores': scores
+                    }
+            return self.last_yolo_obs
         if self.OBS_TYPE == ObservationType.RGB:
             if self.step_counter%self.IMG_CAPTURE_FREQ == 0:
                 for i in range(self.NUM_DRONES):

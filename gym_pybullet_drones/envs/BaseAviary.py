@@ -1151,3 +1151,20 @@ class BaseAviary(gym.Env):
             current_position + normalized_direction * step_size
         )  # Calculate the next step
         return next_step
+    
+    ################################################################################
+    ### YOLO implementation
+    ################################################################################
+
+    def _computeYOLOBoundingBoxes(self, rgb_image):
+        """Computes YOLO bounding boxes for the given RGB image.
+
+        This is a placeholder method. You should replace this with actual YOLO implementation.
+
+        * Actual implementation should only include a single bounding box *
+        """
+        # Placeholder implementation - replace with actual YOLO
+        boxes = np.array([[0.1, 0.1, 0.2, 0.2], [0.5, 0.5, 0.6, 0.6]])
+        classes = np.array([1, 2])
+        scores = np.array([0.9, 0.8])
+        return boxes, classes, scores

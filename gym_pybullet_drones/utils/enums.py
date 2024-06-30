@@ -46,3 +46,5 @@ class ObservationType(Enum):
     """Observation type enumeration class."""
     KIN = "kin"     # Kinematic information (pose, linear and angular velocities)
     RGB = "rgb"     # RGB camera capture in each drone's POV
+    YOLO_BBOXES = "yolo_bboxes"  # YOLO bounding boxes
+    RGB_YOLO = "rgb_yolo"  # RGB image with YOLO bounding boxes
